@@ -1,0 +1,17 @@
+# IDE
+.idea
+.DS_Store
+
+# Node modules
+node_modules
+
+# Adonis directory for storing tmp files
+tmp
+.nyc_output
+
+# Environment variables, never commit this file
+.env
+.env.test
+
+# The development sqlite file
+database/*.sqlite
