@@ -1,5 +1,4 @@
 'use strict'
-const User = use('App/Models/user')
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -15,12 +14,12 @@ const User = use('App/Models/user')
 
 /** .type {typeof import('.adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
-Route.get('login', async ({auth, response}) => {
-  let user = await User.find(1);
-  let token = await auth.withRefreshToken().generate(user);
-  console.log(token);
-  response.send(token)
-});
+// Route.get('login', async ({auth, response}) => {
+//   let user = await User.find(1);
+//   let token = await auth.withRefreshToken().generate(user);
+//   console.log(token);
+//   response.send(token)
+// });
 
 Route.get('twitter/redirect', 'AuthController.redirect');
 Route.get('twitter/callback', 'AuthController.callback');
