@@ -32,10 +32,14 @@
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.0",
     "nyc": "^15.1.0",
-    "twitter-stream-api": "^0.5.2"
+    "twitter-stream-api": "^0.5.2",
+    "url-parse": "^1.4.7"
   },
   "devDependencies": {},
   "autoload": {
     "App": "./app"
+  },
+  "engines": {
+    "node": "10.20.1"
   }
 }
