@@ -59,8 +59,8 @@ const aliases = {}
 |
 */
 const commands = [
- 'app/Commands/TweetStream',
-  'app/Commands/Test',
+ 'App/Commands/TweetStream',
+  'App/Commands/Test',
 ]
 
 module.exports = { providers, aceProviders, aliases, commands }
