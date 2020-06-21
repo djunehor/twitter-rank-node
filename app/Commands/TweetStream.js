@@ -38,6 +38,7 @@ class TweetStream extends Command {
   }
 
   async handle (args, options) {
+    this.info('Started stream')
     const exists = await Drive.exists(lockFile);
     if(!exists) {
       await Drive.put(lockFile, Buffer.from('Hello world!'));

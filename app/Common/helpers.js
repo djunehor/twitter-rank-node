@@ -25,13 +25,13 @@ function calculate_points(user) {
 
 async function get_rank(primaryKey, primaryValue, column = null, value = null) {
 
-    let rank = Tweep.query()
-      .where(primaryKey, '>', primaryValue);
-    if (column && value)
-      rank.where(column, value);
+  let rank = Tweep.query()
+    .where(primaryKey, '>', primaryValue);
+  if (column && value)
+    rank.where(column, value);
 
-    let total = await rank.getCount();
-    return (parseInt(total) + 1);
+  let total = await rank.getCount();
+  return (parseInt(total) + 1);
 }
 
 async function save_or_update_tweep(user, update = false) {
@@ -63,36 +63,34 @@ async function save_or_update_tweep(user, update = false) {
 
   let regionId = region ? region.id : null;
 
-  let payload = {
-    "id_str": user['id_str'],
-    "name": user['name'],
-    "screen_name": user['screen_name'],
-    "location": user['location'],
-    "description": user['description'],
-    "followers_count": user['followers_count'],
-    "friends_count": user['friends_count'],
-    "creation_date": user['creation_date'] ? user['creation_date'] : null,
-    "favourites_count": user['favourites_count'],
-    "statuses_count": user['statuses_count'],
-    "verified": user['verified'],
-    "protected": user['protected'],
-    "profile_image_url_https": user['profile_image_url_https'],
-    "points": await calculate_points(user),
-    "email": user['email'] || await get_email_from_string(user['description']),
-    "country_id": countryId,
-    "city_id": cityId,
-    "region_id": regionId
-  };
-
-  let tweep = await Tweep.query().where('id_str', payload['id_str']).first();
+  let tweep = await Tweep.query().where('id_str', user['id_str']).first();
 
   if (!tweep) {
-    tweep = await Tweep.create(payload);
+    tweep = new Tweep();
   }
-  let data = tweep.toJSON();
 
-  if(data.city && !data.country) {
-    tweep.country_id = data.city.country.id
+  tweep.id_str = user['id_str'];
+  tweep.name = user['name'];
+  tweep.screen_name = user['screen_name'];
+  tweep.location = user['location'];
+  tweep.description = user['description'];
+  tweep.followers_count = user['followers_count'];
+  tweep.friends_count = user['friends_count'];
+  tweep.creation_date = moment(user['creation_date'] ? user['creation_date'] : null).format('YYYY-MM-DD HH:mm:ss');
+  tweep.favourites_count = user['favourites_count'];
+  tweep.statuses_count = user['statuses_count'];
+  tweep.verified = user['verified'];
+  tweep.protected = user['protected'];
+  tweep.profile_image_url_https = user['profile_image_url_https'];
+  tweep.points = await calculate_points(user);
+  tweep.email = user['email'] || await get_email_from_string(user['description']);
+  tweep.country_id = countryId;
+  tweep.city_id = cityId;
+  tweep.region_id = regionId;
+
+  tweep.save();
+  if (tweep.city && !tweep.country_id) {
+    tweep.country_id = tweep.city.country.id
     tweep.save();
   }
 
@@ -102,18 +100,18 @@ async function save_or_update_tweep(user, update = false) {
 async function rank_tweep(tweep) {
   let [world_rank, country_rank, region_rank, city_rank] = await Promise.all([
     get_rank('points', tweep.points, null, null),
-    get_rank('points', tweep.points,  'country_id', tweep.country_id),
+    get_rank('points', tweep.points, 'country_id', tweep.country_id),
     get_rank('points', tweep.points, 'region_id', tweep.region_id),
     get_rank('points', tweep.points, 'city_id', tweep.city_id)
   ])
 
   tweep.meta = JSON.stringify({
-        world_rank: world_rank,
-        country_rank: country_rank,
-        city_rank: city_rank,
-        region_rank: region_rank,
-      })
-   tweep.save();
+    world_rank: world_rank,
+    country_rank: country_rank,
+    city_rank: city_rank,
+    region_rank: region_rank,
+  })
+  tweep.save();
 
 }
 
