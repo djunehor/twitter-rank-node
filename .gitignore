@@ -10,7 +10,6 @@ tmp
 .nyc_output
 
 # Environment variables, never commit this file
-.env
 .env.test
 
 # The development sqlite file
