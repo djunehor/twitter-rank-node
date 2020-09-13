@@ -30,7 +30,7 @@
     "@adonisjs/vow": "^1.0.17",
     "get-twitter-info": "^2.0.2",
     "mysql": "^2.18.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "nyc": "^15.1.0",
     "twitter-stream-api": "^0.5.2",
     "url-parse": "^1.4.7"
