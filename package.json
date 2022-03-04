@@ -33,7 +33,7 @@
     "node-fetch": "^2.6.7",
     "nyc": "^15.1.0",
     "twitter-stream-api": "^0.5.2",
-    "url-parse": "^1.5.8"
+    "url-parse": "^1.5.9"
   },
   "devDependencies": {},
   "autoload": {
